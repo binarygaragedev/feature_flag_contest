@@ -4,7 +4,8 @@ import QuantumStateVisualizer from './QuantumStateVisualizer';
 
 const DEVCYCLE_CLIENT_KEY = 'dvc_client_f307821e_5904_48eb_af7d_36c5fbfec016_cba8923';
 
-function App() {
+// Make sure to include "export default"
+export default function App() {
   return (
     <DevCycleProvider
       config={{
@@ -12,7 +13,6 @@ function App() {
         user: {
           user_id: 'quantum-user-' + Math.random().toString(36).substr(2, 9),
           email: 'quantum@example.com',
-          name: 'Quantum User'
         }
       }}
     >
@@ -20,5 +20,3 @@ function App() {
     </DevCycleProvider>
   );
 }
-
-export default App;

@@ -65,26 +65,46 @@ const QuantumFlag = ({ name, state, onObserve, isCollapsed }) => {
 };
 
 const QuantumStateVisualizer = () => {
-  const dvcClient = useDVCClient();
-  const [features, setFeatures] = useState({});
-  const [flagStates, setFlagStates] = useState({});
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (dvcClient) {
-      try {
-        const allFeatures = dvcClient.allFeatures();
-        console.log("allFeaturs"+allFeatures);
-        setFeatures(allFeatures);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to fetch features');
-        setLoading(false);
-      }
-    }
-  }, [dvcClient]);
+    const dvcClient = useDVCClient();
+    const [features, setFeatures] = useState({});
+    const [flagStates, setFlagStates] = useState({});
+    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+  
+    // Add retry mechanism for initialization
+    useEffect(() => {
+      const initializeFeatures = async () => {
+        if (!dvcClient) {
+          return;
+        }
+  
+        try {
+          // Add a small delay to ensure client is ready
+          await new Promise(resolve => setTimeout(resolve, 500));
+          
+          const allFeatures = dvcClient.allFeatures();
+          console.log('Features loaded:', allFeatures); // Debug log
+          
+          if (Object.keys(allFeatures).length === 0) {
+            // If no features, retry after delay
+            setTimeout(initializeFeatures, 1000);
+            return;
+          }
+  
+          setFeatures(allFeatures);
+          setLoading(false);
+        } catch (err) {
+          console.error('Error loading features:', err);
+          setError('Failed to fetch features');
+          setLoading(false);
+        }
+      };
+  
+      initializeFeatures();
+    }, [dvcClient]);
+  
+    
 
   const collapseWavefunction = () => {
     try {
