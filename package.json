@@ -1,5 +1,6 @@
 {
   "name": "feature_flag_contest",
+  "license": "MIT",
   "private": true,
   "version": "0.0.0",
   "type": "module",
