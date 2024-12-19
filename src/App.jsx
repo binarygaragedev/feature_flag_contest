@@ -4,7 +4,6 @@ import QuantumStateVisualizer from './QuantumStateVisualizer';
 
 const DEVCYCLE_CLIENT_KEY = 'dvc_client_f307821e_5904_48eb_af7d_36c5fbfec016_cba8923';
 
-// Make sure to include "export default"
 export default function App() {
   return (
     <DevCycleProvider
